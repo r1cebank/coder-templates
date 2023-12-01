@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Checks if pylint score is above 7.0
+      - name: Package all templates
         run: |
           for d in */ ; do
             cd "$d" && tar -cvf ../$(basename $d).tar * && cd ../
@@ -19,7 +19,6 @@ jobs:
           prerelease: false
           release_name: ${{ steps.version.outputs.version }}
           tag_name: ${{ github.ref }}
-          body_path: CHANGELOG.md
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Upload
