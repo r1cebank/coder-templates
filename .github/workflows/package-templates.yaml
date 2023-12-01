@@ -11,10 +11,6 @@ jobs:
           for d in */ ; do
             cd "$d" && tar -cvf ../$(basename $d).tar * && cd ../
           done
-      - uses: actions/upload-artifact@v3
-        with:
-          name: templates
-          path: *.tar
       - name: release
         uses: actions/create-release@v1
         id: create_release
@@ -26,3 +22,23 @@ jobs:
           body_path: CHANGELOG.md
         env:
           GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const path = require('path');
+            const fs = require('fs');
+            const release_id = '${{ needs.create_release.outputs.id }}';
+            for (let file of await fs.readdirSync('./')) {
+              if (path.extname(file) === '.tar') {
+                console.log('uploadReleaseAsset', file);
+                await github.repos.uploadReleaseAsset({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  release_id: release_id,
+                  name: file,
+                  data: await fs.readFileSync(`./${file}`)
+                });
+              }
+            }
