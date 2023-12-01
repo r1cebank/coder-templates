@@ -20,7 +20,7 @@ jobs:
           release_name: ${{ steps.version.outputs.version }}
           tag_name: ${{ github.ref }}
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload
         uses: actions/github-script@v3
         with:
