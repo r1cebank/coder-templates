@@ -11,16 +11,16 @@ jobs:
           for d in */ ; do
             cd "$d" && tar -cvf ../$(basename $d).tar * && cd ../
           done
-      - name: release
-        uses: actions/create-release@v1
+      - name: Create Release
         id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-          release_name: ${{ steps.version.outputs.version }}
-          tag_name: ${{ github.ref }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload
         uses: actions/github-script@v3
         with:
