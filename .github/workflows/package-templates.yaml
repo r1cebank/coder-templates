@@ -1,8 +1,11 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+name: Package Templates
 jobs:
-  Package-Templatess:
+  Package-Templates:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
