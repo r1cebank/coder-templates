@@ -117,19 +117,19 @@ data "coder_parameter" "repo" {
   description  = "Select a repository to automatically clone and start working with a devcontainer."
   mutable      = true
   option {
-    name        = "Node.js"
-    description = "Node.js JavaScript runtime ✨🐢🚀✨"
+    name        = "nodejs/node"
+    description = "Node.js JavaScript runtime"
     value       = "https://github.com/nodejs/node"
   }
   option {
-    name        = "home-assistant/core"
-    description = "🏡 Open source home automation that puts local control and privacy first."
-    value       = "https://github.com/home-assistant/core"
+    name        = "misskey-dev/misskey"
+    description = "🌎 An interplanetary microblogging platform 🚀 "
+    value       = "https://github.com/misskey-dev/misskey"
   }
   option {
-    name        = "discourse/discourse"
-    description = "A platform for community discussion. Free, open, simple."
-    value       = "https://github.com/discourse/discourse"
+    name        = "mastodon/mastodon"
+    description = "Your self-hosted, globally interconnected microblogging community"
+    value       = "https://github.com/mastodon/mastodon"
   }
   option {
     name        = "denoland/deno"
@@ -138,13 +138,11 @@ data "coder_parameter" "repo" {
   }
   option {
     name        = "microsoft/vscode"
-    icon        = "/icon/code.svg"
     description = "Code editing. Redefined."
     value       = "https://github.com/microsoft/vscode"
   }
   option {
     name        = "Custom"
-    icon        = "/emojis/1f5c3.png"
     description = "Specify a custom repo URL below"
     value       = "custom"
   }
