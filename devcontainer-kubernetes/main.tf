@@ -118,7 +118,7 @@ data "coder_parameter" "repo" {
   mutable      = true
   option {
     name        = "nodejs/node"
-    description = "Node.js JavaScript runtime"
+    description = " Node.js JavaScript runtime ✨🐢🚀✨"
     value       = "https://github.com/nodejs/node"
   }
   option {
