@@ -44,26 +44,25 @@ data "coder_workspace" "me" {
 }
 
 resource "coder_agent" "main" {
-  arch                   = data.coder_provisioner.me.arch
-  os                     = "linux"
-  startup_script_timeout = 180
-  startup_script         = <<-EOT
+  arch           = data.coder_provisioner.me.arch
+  os             = "linux"
+  startup_script = <<-EOT
     set -e
 
     # install and start code-server
     curl -fsSL https://code-server.dev/install.sh | sh -s -- --method=standalone --prefix=/tmp/code-server --version 4.11.0
     /tmp/code-server/bin/code-server --auth none --port 13337 >/tmp/code-server.log 2>&1 &
   EOT
-  dir                    = "/workspaces"
+  dir            = "/workspaces"
 
   # These environment variables allow you to make Git commits right away after creating a
   # workspace. Note that they take precedence over configuration defined in ~/.gitconfig!
   # You can remove this block if you'd prefer to configure Git manually or using
   # dotfiles. (see docs/dotfiles.md)
   env = {
-    GIT_AUTHOR_NAME     = "${data.coder_workspace.me.owner}"
-    GIT_COMMITTER_NAME  = "${data.coder_workspace.me.owner}"
+    GIT_AUTHOR_NAME     = coalesce(data.coder_workspace.me.owner_name, data.coder_workspace.me.owner)
     GIT_AUTHOR_EMAIL    = "${data.coder_workspace.me.owner_email}"
+    GIT_COMMITTER_NAME  = coalesce(data.coder_workspace.me.owner_name, data.coder_workspace.me.owner)
     GIT_COMMITTER_EMAIL = "${data.coder_workspace.me.owner_email}"
   }
 
@@ -117,6 +116,11 @@ data "coder_parameter" "repo" {
   description  = "Select a repository to automatically clone and start working with a devcontainer."
   mutable      = true
   option {
+    name        = "vercel/next.js"
+    description = "The React Framework"
+    value       = "https://github.com/vercel/next.js"
+  }
+  option {
     name        = "nodejs/node"
     description = " Node.js JavaScript runtime ✨🐢🚀✨"
     value       = "https://github.com/nodejs/node"
@@ -132,17 +136,24 @@ data "coder_parameter" "repo" {
     value       = "https://github.com/mastodon/mastodon"
   }
   option {
+    name        = "discourse/discourse"
+    description = "A platform for community discussion. Free, open, simple."
+    value       = "https://github.com/discourse/discourse"
+  }
+  option {
     name        = "denoland/deno"
     description = "A modern runtime for JavaScript and TypeScript."
     value       = "https://github.com/denoland/deno"
   }
   option {
     name        = "microsoft/vscode"
+    icon        = "/icon/code.svg"
     description = "Code editing. Redefined."
     value       = "https://github.com/microsoft/vscode"
   }
   option {
     name        = "Custom"
+    icon        = "/emojis/1f5c3.png"
     description = "Specify a custom repo URL below"
     value       = "custom"
   }
